@@ -1,4 +1,11 @@
 package Seminar_1;
 
-class main {
+import java.util.ArrayList;
+
+class Main {
+    public static void main(String[] args) {
+ArrayList<BaseHero> hero = new ArrayList<>();
+
+
+    }
 }
