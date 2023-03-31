@@ -1,14 +1,17 @@
 package Seminar_1.heroes;
 
-public class Crossbowman extends BaseHero {
-    int arrows; // сьрелы
-    int accuracy; // точность
+public class Crossbowman extends Shooter {
+
+    int arrows;
+
+    int accuracy;
 
     public Crossbowman(String name) {
-        super(100, name, 1, 6, 12, 2, new int[] { 1, 8 }, 10, 2, 1, 3);
-
-        arrows = 10;
-        accuracy = 70;
+        super(100, name, 1, 6, 75, new int[]{8, 14},  10, 80);
     }
 
+    @Override
+    public String getInfo() {
+        return "Арбалетчик";
+    }
 }

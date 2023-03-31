@@ -1,35 +1,48 @@
 package Seminar_1.heroes;
 
+import java.util.Random;
 
-public abstract class BaseHero {
+import Seminar_1.weapons.Weapons;
 
+public abstract class BaseHero implements GameInterface {
     public String name;
-    int x, y;
-    float hp, maxHp;
-    int [] damage;
-    int atk;
-    int def;
-    int power;
-    int speed;
-    int agility;
-    int armor;
 
-    public BaseHero(float hp, String name,int x, int y, int atk,int def, int[] damage,int power,int speed,int agility, int armor){
-        this.hp = this.maxHp = hp;
+    protected int x;
+    protected int y;
+
+    protected int hp;
+    protected int max_hp;
+
+    protected int armor;
+    protected int[] damage;
+
+    protected Weapons weapon;
+
+    @Override
+    public String toString() {
+        return this.getInfo() + " " + this.name + " Здоровье: " + this.hp + " Броня: " + this.armor;
+    }
+
+    public BaseHero(int hp, String name, int x, int y, int armor, int[] damage) {
+        this.hp = hp;
         this.name = name;
         this.x = x;
         this.y = y;
-        this.atk = atk;
-        this.damage = damage;
-        this.def = def;
-        this.power = power;
-        this.speed = speed;
-        this.agility = agility;
         this.armor = armor;
+        this.damage = damage;
+    }
+
+    protected int getInt() {
+        return 1;
+    }
+
+    @Override
+    public void step() {
 
     }
 
-    // protected int getInt(){
-    //     return 1;
-    // }
+    @Override
+    public String getInfo() {
+        return getClass().getSimpleName();
+    }
 }
