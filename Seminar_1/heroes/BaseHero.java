@@ -1,7 +1,7 @@
 package Seminar_1.heroes;
 
 
-public class BaseHero {
+public abstract class BaseHero {
 
     public String name;
     int x, y;
@@ -28,4 +28,8 @@ public class BaseHero {
         this.armor = armor;
 
     }
+
+    // protected int getInt(){
+    //     return 1;
+    // }
 }
