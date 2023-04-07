@@ -1,5 +1,7 @@
-package Seminar_1.heroes;
-import Seminar_1.Spells;
+package seminar01.units;
+
+import seminar01.Spells;
+
 import java.util.ArrayList;
 
 public class Mage extends BaseHero {
@@ -7,8 +9,8 @@ public class Mage extends BaseHero {
 
     protected Spells[] spells_book = new Spells[3];
 
-    public Mage(String name) {
-        super(100, name, 1, 6, 15, new int[]{3, 5});
+    public Mage(String name, boolean firstTeam) {
+        super(100, name, firstTeam, 15, new int[]{3, 5});
         mana = 100;
         spells_book[0] = new Spells("Фаербол");
         spells_book[1] = new Spells("Увеличение брони");
@@ -17,7 +19,7 @@ public class Mage extends BaseHero {
 
     @Override
     public String getInfo() {
-        return "Маг";
+        return "Маг " + name;
     }
 
 }

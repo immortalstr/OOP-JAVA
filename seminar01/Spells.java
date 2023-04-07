@@ -1,4 +1,4 @@
-package Seminar_1;
+package seminar01;
 
 public class Spells {
     protected String name;

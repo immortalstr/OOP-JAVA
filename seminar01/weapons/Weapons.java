@@ -1,4 +1,4 @@
-package Seminar_1.weapons;
+package seminar01.weapons;
 
 public class Weapons {
     protected String name;
