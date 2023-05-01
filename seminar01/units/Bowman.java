@@ -11,4 +11,3 @@ public class Bowman extends Shooter {
         return className + " " + name;
     }
 }
-

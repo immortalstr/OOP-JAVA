@@ -1,5 +1,7 @@
 package seminar01.units;
 
+import seminar01.teams.Team;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -43,11 +45,11 @@ public abstract class BaseHero implements GameInterface {
 
     protected static int idCounter;
 
-    protected static ArrayList<BaseHero> holyTeam;
+    protected static Team<BaseHero> holyTeam;
 
-    protected static ArrayList<BaseHero> darkTeam;
+    protected static Team<BaseHero> darkTeam;
 
-    protected static ArrayList<BaseHero> allTeam;
+    protected static Team<BaseHero> allTeam;
 
     protected static int count;
 
@@ -63,9 +65,9 @@ public abstract class BaseHero implements GameInterface {
 
     static {
         idCounter = 0;
-        holyTeam = new ArrayList<>();
-        darkTeam = new ArrayList<>();
-        allTeam = new ArrayList<>();
+        holyTeam = new Team<>("Holy Team");
+        darkTeam = new Team<>("Holy Team");
+        allTeam = new Team<>("All Team");
         lastFirstTeamX = 1;
         lastFirstTeamY = 1;
         lastSecondTeamX = 10;
@@ -123,7 +125,7 @@ public abstract class BaseHero implements GameInterface {
 
 
     protected BaseHero findClosestEnemy() {
-        ArrayList<BaseHero> enemyTeam = filterLiveTeam(getEnemyTeam());
+        Team<BaseHero> enemyTeam = filterVisibleTeam(getEnemyTeam());
         BaseHero closestEnemy = enemyTeam.get(0);
         double distance = Coords.getDistance(this.position, enemyTeam.get(0).position);
         double minDistance = distance;
@@ -180,7 +182,7 @@ public abstract class BaseHero implements GameInterface {
         return initiative;
     }
 
-    public static ArrayList<BaseHero> getAllTeam() {
+    public static Team<BaseHero> getAllTeam() {
         return allTeam;
     }
 
@@ -188,29 +190,38 @@ public abstract class BaseHero implements GameInterface {
         return id;
     }
 
-    protected ArrayList<BaseHero> getAllyTeam() {
+    protected Team<BaseHero> getAllyTeam() {
         if (team) return holyTeam;
         return darkTeam;
     }
 
-    protected ArrayList<BaseHero> getEnemyTeam() {
+    protected Team<BaseHero> getEnemyTeam() {
         if (team) return darkTeam;
         return holyTeam;
     }
 
-    public static ArrayList<BaseHero> filterLiveTeam(ArrayList<BaseHero> team) {
-        ArrayList<BaseHero> liveTeam = new ArrayList<>();
+    public static Team<BaseHero> filterVisibleTeam(Team<BaseHero> team) {
+        Team<BaseHero> liveTeam = new Team<>();
         for (BaseHero hero : team) {
             if (Objects.equals(hero.state, "Stand")) liveTeam.add(hero);
         }
         return liveTeam;
     }
 
-    public static ArrayList<BaseHero> getHolyTeam() {
+    public static Team<BaseHero> filterLiveTeam(Team<BaseHero> team) {
+        Team<BaseHero> liveTeam = new Team<>();
+        for (BaseHero hero : team) {
+            if (!Objects.equals(hero.state, "Dead")) liveTeam.add(hero);
+        }
+        return liveTeam;
+    }
+
+
+    public static Team<BaseHero> getHolyTeam() {
         return holyTeam;
     }
 
-    public static ArrayList<BaseHero> getDarkTeam() {
+    public static Team<BaseHero> getDarkTeam() {
         return darkTeam;
     }
 
@@ -228,7 +239,7 @@ public abstract class BaseHero implements GameInterface {
     protected boolean checkPosition(int pos_x, int pos_y) {
         if (pos_x > 10 || pos_y > 10 || pos_x < 1 || pos_y < 1)
             return false;
-        for (BaseHero hero : getAllyTeam())
+        for (BaseHero hero : filterVisibleTeam(getAllyTeam()))
             if (hero.position.x == pos_x && hero.position.y == pos_y)
                 return false;
         return true;
@@ -262,14 +273,14 @@ public abstract class BaseHero implements GameInterface {
     }
 
     protected boolean hasInjuredAlly() {
-        for (BaseHero hero : filterLiveTeam(getAllyTeam())) {
-            if (hero.maxHp != hp) return true;
+        for (BaseHero hero : filterVisibleTeam(getAllyTeam())) {
+            if (hero.maxHp != hp && hero != this) return true;
         }
         return false;
     }
 
     protected BaseHero findLowestHpAlly() {
-        ArrayList<BaseHero> allyTeam = filterLiveTeam(getAllyTeam());
+        Team<BaseHero> allyTeam = filterVisibleTeam(getAllyTeam());
         int maxHpDiff = allyTeam.get(0).maxHp - allyTeam.get(0).hp;
         BaseHero lowestHpAlly = allyTeam.get(0);
         for (BaseHero hero : allyTeam) {
@@ -279,5 +290,9 @@ public abstract class BaseHero implements GameInterface {
             }
         }
         return lowestHpAlly;
+    }
+
+    public int[] getCoords() {
+        return new int[]{position.y, position.x};
     }
 }
